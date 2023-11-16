@@ -22,7 +22,7 @@ Es handelt sich um eine Bildergalerie, welche über eine Picsum-API per fetch("h
       - Falls nicht erfolgreich:
          - Werfe einen Fehler mit der Nachricht "Hier ist etwas schief gelaufen".
       - Falls erfolgreich:
-         - Parste die Antwort als JSON.
+         - Parse die Antwort als JSON.
 
    2.2. **Für jedes Element in den Daten:**
       - Erstelle ein neues `figure`-Element.
