@@ -24,7 +24,7 @@ console.log("%c JS-Vertiefung – API Picsum", "color: tomato");
 
 const fetchPicsum = () => {
 	const wrapper = document.querySelector(".wrapper");
-	fetch("https://picsum.photos/v2/list?page&limit=50")
+	fetch("https://picsum.photos/v2/list?page&limit=52")
 		.then((response) => {
 			if (response.ok === false) {
 				throw new Error("Hier ist etwas schief gelaufen");

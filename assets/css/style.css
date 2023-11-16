@@ -42,8 +42,7 @@ img {
 
 body {
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
-    background-color: lightgrey;
-    scroll-behavior: smooth;
+    background: url('./../images/bg.jpg') center/cover fixed;
     display: flex;
     justify-content: center;
 	align-items: center;
@@ -64,12 +63,13 @@ body {
                             Content
 ========================================================== */
 
-h2 {
+h1 {
 	padding-block-end: 3vh;
+	color: rgba(0, 0, 0, 0.8);
 }
 
 figure {
-	background-color: rgb(77 191 254 / 50%);
+	background-color: rgb(254 188 77 / 40%);
 	transition: all 3s ease-in-out;
 	padding: 10px 10px 20px;
 	border-radius: 15px;
