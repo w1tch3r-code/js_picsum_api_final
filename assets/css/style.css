@@ -82,3 +82,14 @@ a {
 	border-radius: 5px;
 	margin-top: 15px;
 }
+
+button {
+	background-color: #FE654D;
+	color: white;
+	font-size: 0.8rem;
+	padding: 10px 20px;
+	border-radius: 5px;
+	margin-top: 15px;
+	cursor: pointer;
+	border: none;
+}
