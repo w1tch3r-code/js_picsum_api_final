@@ -24,8 +24,7 @@ console.log("%c JS-Vertiefung – API Picsum", "color: tomato");
 
 const fetchPicsum = () => {
 	const wrapper = document.querySelector(".wrapper");
-	//https://picsum.photos/v2/list?page&limit=100
-	fetch("https://picsum.photos/v2/list")
+	fetch("https://picsum.photos/v2/list?page&limit=50")
 		.then((response) => {
 			if (response.ok === false) {
 				throw new Error("Hier ist etwas schief gelaufen");
@@ -34,7 +33,14 @@ const fetchPicsum = () => {
 		})
 		.then((data) => {
 			data.forEach((elem) => {
-				// console.log(elem);
+				// Options für IntersectionObserver
+				const options = {
+					root: null,
+					rootMargin: '200px',
+					threshold: 0 , delay: 1000,
+				};
+
+				const allFigure = document.querySelectorAll('figure');
 				const newFigure = document.createElement("figure");
 				const newImage = document.createElement("img");
 				const newFigcaption = document.createElement("figcaption");
@@ -42,6 +48,7 @@ const fetchPicsum = () => {
 
 				newImage.setAttribute("src", `${elem.download_url}`);
 				newImage.setAttribute("alt", `${elem.author}`);
+				newImage.setAttribute("height", '215');
 
 				newFigcaption.textContent = elem.author;
 
@@ -49,10 +56,30 @@ const fetchPicsum = () => {
 					window.open(elem.url, "_blank");
 				});
 
+				newButton.setAttribute("type", "button");
 				newButton.textContent = `See more`;
 				newFigure.append(newImage, newFigcaption, newButton);
 
+				const moveObserver = new IntersectionObserver((entries) => {
+					entries.forEach((entry) => {
+						const intersecting = entry.isIntersecting;
+						if (intersecting) {
+							entry.target.style.opacity = "1";
+							entry.target.style.transform = "scale(1)";
+						} else {
+							entry.target.style.opacity = "0";
+							entry.target.style.transform = "scale(0.5)";
+							
+						}
+					});
+				}, options);
+
 				wrapper.appendChild(newFigure);
+
+				allFigure.forEach((allFigure) => {
+					moveObserver.observe(allFigure);
+				});
+				
 			});
 		})
 		.catch((error) => console.log(error));

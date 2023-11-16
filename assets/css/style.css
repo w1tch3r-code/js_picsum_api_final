@@ -54,10 +54,9 @@ body {
 .wrapper {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
-	row-gap: 25px;
-	column-gap: 50px;
+	gap: 25px;
 	text-align: center;
-	max-width: 1200px;
+	max-width: 1440px;
     margin: 0 auto;
 }
 
@@ -67,6 +66,20 @@ body {
 
 h2 {
 	padding-block-end: 3vh;
+}
+
+figure {
+	background-color: rgb(77 191 254 / 50%);
+	transition: all 3s ease-in-out;
+	padding: 10px 10px 20px;
+	border-radius: 15px;
+	width: 100%;
+}
+
+img {
+	border-radius: 10px;
+	object-fit: cover;
+	margin: 0 auto;
 }
 
 figcaption {
@@ -92,4 +105,10 @@ button {
 	margin-top: 15px;
 	cursor: pointer;
 	border: none;
+	transition: all 0.5s ease-in-out;
+}
+
+button:hover {
+	background-color: white;
+	color: #FE654D;
 }
