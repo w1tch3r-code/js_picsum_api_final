@@ -21,42 +21,17 @@ img {
 }
 
 /* ========================================================== 
-                        Image Links
-========================================================== */
-
-/* https://source.unsplash.com/random?night sky */
-/* https://source.unsplash.com/random/?Cryptocurrency&1 */
-/* https://picsum.photos/300/300?random=1 */
-
-/* ========================================================== 
-                            Fonts
-========================================================== */
-
-/* ========================================================== 
-                Variables / Custom Properties
-========================================================== */
-
-/* ========================================================== 
-                            Body
+                        Body – Wrapper
 ========================================================== */
 
 body {
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
-    background: url('./../images/bg.jpg') center/cover fixed;
-    display: flex;
-    justify-content: center;
+	background: url("./../images/bg.jpg") center/cover fixed;
+	display: flex;
+	justify-content: center;
 	align-items: center;
 	flex-direction: column;
 	padding-block: 5vh;
-}
-
-.wrapper {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	gap: 25px;
-	text-align: center;
-	max-width: 1440px;
-    margin: 0 auto;
 }
 
 /* ========================================================== 
@@ -86,18 +61,8 @@ figcaption {
 	padding-block-start: 1.5vh;
 }
 
-a {
-	display: inline-block;
-	background-color: #FE654D;
-	color: white;
-	font-size: 0.8rem;
-	padding: 10px 20px;
-	border-radius: 5px;
-	margin-top: 15px;
-}
-
 button {
-	background-color: #FE654D;
+	background-color: #fe654d;
 	color: white;
 	font-size: 0.8rem;
 	padding: 10px 20px;
@@ -110,5 +75,85 @@ button {
 
 button:hover {
 	background-color: white;
-	color: #FE654D;
+	color: #fe654d;
+}
+
+section.nav {
+	text-align: center;
+}
+
+.nav-btn {
+    background-color: transparent;
+    border: 2px solid #fe654d;
+    margin-top: 5px;
+    padding: 0 30px;
+    color: black;
+    font-weight: bold;
+    line-height: 1.5rem;
+    text-transform: uppercase;
+}
+
+.nav-btn.backward::before {
+	content: "\2190";
+	margin-right: 5px;
+	font-size: 2rem;
+	vertical-align: sub;
+}
+
+.nav-btn.forward::after {
+	content: "\2192";
+	margin-left: 5px;
+	font-size: 2rem;
+	vertical-align: sub;
+}
+
+/* ========================================================== 
+                        Media Queries
+========================================================== */
+
+/** Smartphones: Inhalte in einer Spalte **/
+@media (max-width: 480px) {
+	.gallery__wrapper {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 25px;
+		text-align: center;
+		margin: 30px auto;
+	}
+}
+
+/** Tablet: Inhalte in zwei Spalten **/
+@media (min-width: 481px) {
+	.gallery__wrapper {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 25px;
+		text-align: center;
+		max-width: 719px;
+		margin: 30px auto;
+	}
+}
+
+/** Laptop: Inhalte in drei Spalten **/
+@media (min-width: 720px) {
+	.gallery__wrapper {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 25px;
+		text-align: center;
+		max-width: 1159px;
+		margin: 30px auto;
+	}
+}
+
+/** Große Monitore: Inhalte in 4 Spalten **/
+@media (min-width: 1160px) {
+	.gallery__wrapper {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 25px;
+		text-align: center;
+		max-width: 1440px;
+		margin: 30px auto;
+	}
 }

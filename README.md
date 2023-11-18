@@ -12,32 +12,53 @@ Es handelt sich um eine Bildergalerie, welche über eine Picsum-API per fetch("h
 
 ## Programmablaufplan
 
-1. **Start**
-   - Setze `wrapper` auf das DOM-Element mit der Klasse "wrapper".
+## Navigation
 
-2. **Führe eine HTTP-Anfrage durch:**
-   - Verwende die Fetch-API, um die Ressource "https://picsum.photos/v2/list" abzurufen.
-   
-   2.1. **Überprüfe, ob die Antwort erfolgreich ist:**
-      - Falls nicht erfolgreich:
-         - Werfe einen Fehler mit der Nachricht "Hier ist etwas schief gelaufen".
-      - Falls erfolgreich:
-         - Parse die Antwort als JSON.
+### Variablen:
+- `navigationBtn`: NodeList von Buttons mit der Klasse "nav-btn"
+- `outputGallery`: Das DOM-Element mit der Klasse "gallery__wrapper"
+- `pageNumber`: Aktuelle Seitenzahl, initial auf 1 gesetzt
 
-   2.2. **Für jedes Element in den Daten:**
-      - Erstelle ein neues `figure`-Element.
-      - Erstelle ein neues `img`-Element und setze die Quelle und den Alternativtext.
-      - Erstelle ein neues `figcaption`-Element und setze den Text.
-      - Erstelle ein neues `button`-Element:
-         - Füge einen Klick-Eventlistener hinzu, der ein neues Fenster mit der URL des Elements öffnet.
-         - Setze den Text des Buttons auf "See more".
-      - Füge das `img`, das `figcaption`, und den `button` zum `figure`-Element hinzu.
-      - Füge das `figure`-Element zum `wrapper` hinzu.
+### Funktionen:
+1. `navigation()`
+   - Iteriere über alle Buttons mit der Klasse "nav-btn"
+     - Füge einen Klick-Eventlistener hinzu:
+       - Wenn der Index gerade ist, verringere die `pageNumber` und stelle sicher, dass sie nicht kleiner als 1 wird.
+       - Wenn der Index ungerade ist, erhöhe die `pageNumber`.
+       - Rufe die Funktion `requestFetch` auf.
 
-3. **Fehlerbehandlung:**
-   - Falls ein Fehler auftritt, gib den Fehler in der Konsole aus.
+## Fetch Picsum API
 
-4. **Ende**
+### Funktionen:
+1. `requestFetch()`
+   - Leere den Inhalt des `outputGallery`.
+   - Führe eine Fetch-Anfrage durch:
+     - Verwende die aktuellen Seitenzahl (`pageNumber`) in der Anfrage.
+     - Wenn die Anfrage erfolgreich ist, parste die JSON-Daten.
+     - Für jedes Bildobjekt in den Daten rufe die Funktion `addNewContent` auf.
+     - Rufe die Funktionen `navigation` und `galleryObserver` auf.
+     - Behandle Fehler, indem du sie in der Konsole ausgibst.
+
+2. `addNewContent(siglePictureObj)`
+   - Erstelle HTML-Elemente für ein Bildobjekt:
+     - `figure`, `img`, `figcaption`, `button`.
+   - Setze Attribute und Texte entsprechend dem Bildobjekt.
+   - Füge das `figure`-Element zum `outputGallery` hinzu.
+
+## Intersection Observer
+
+### Funktionen:
+1. `galleryObserver()`
+   - Selektiere alle `figure`-Elemente.
+   - Erstelle einen Intersection Observer mit den Optionen:
+     - `root: null`, `rootMargin: "200px"`, `threshold: 0`, `delay: 500`.
+   - Für jedes `figure`-Element beobachte Änderungen:
+     - Wenn das Element sichtbar wird, setze die Opazität und die Transformation.
+     - Wenn das Element nicht sichtbar ist, setze die Opazität und die Transformation anders.
+
+## Initialisierung
+- Rufe `requestFetch()` auf.
+
 
 ## Screenshot
 

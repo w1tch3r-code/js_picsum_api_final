@@ -4,8 +4,6 @@
 //      	 	JS-Vertiefung – API Picsum
 // ===================================================
 
-console.log("%c JS-Vertiefung – API Picsum", "color: tomato");
-
 // Aufgabenstellung
 
 // Für dieses Projekt verwenden wir die API von Picsum, um eine Galerie zu erstellen.
@@ -20,105 +18,112 @@ console.log("%c JS-Vertiefung – API Picsum", "color: tomato");
 // appendChild()
 // window.open() könnte für dich nützlich sein
 
-// Mit buttons und window.open()
+// ===================================================
+//      	 		Navigation
+// ===================================================
 
-const fetchPicsum = () => {
-	const wrapper = document.querySelector(".wrapper");
-	fetch("https://picsum.photos/v2/list?page&limit=52")
-		.then((response) => {
-			if (response.ok === false) {
-				throw new Error("Hier ist etwas schief gelaufen");
+const navigationBtn = document.body.querySelectorAll(".nav-btn");
+const outputGallery = document.body.querySelector(".gallery__wrapper");
+let pageNumber = 1;
+
+const navigation = () => {
+	for (let i = 0; i < navigationBtn.length; i++) {
+		navigationBtn[i].addEventListener("click", () => {
+			if (i % 2 === 0) {
+				pageNumber--;
+				if (pageNumber < 1) {
+					pageNumber = 1;
+				}
+			} else {
+				pageNumber++;
 			}
-			return response.json();
+			requestFetch();
+		});
+	}
+};
+
+// ===================================================
+//      	 		Fetch Picsum API
+// ===================================================
+
+const requestFetch = () => {
+	outputGallery.innerHTML = "";
+	fetch(`https://picsum.photos/v2/list?page=${pageNumber}&limit=52`)
+		.then((response) => {
+			if (response.ok) {
+				return response.json();
+			} else {
+				throw new Error("Fetch hat nicht funktioniert!");
+			}
 		})
 		.then((data) => {
-			data.forEach((elem) => {
-				// Options für IntersectionObserver
-				const options = {
-					root: null,
-					rootMargin: '200px',
-					threshold: 0 , delay: 1000,
-				};
-
-				const allFigure = document.querySelectorAll('figure');
-				const newFigure = document.createElement("figure");
-				const newImage = document.createElement("img");
-				const newFigcaption = document.createElement("figcaption");
-				const newButton = document.createElement("button");
-
-				newImage.setAttribute("src", `${elem.download_url}`);
-				newImage.setAttribute("alt", `${elem.author}`);
-				newImage.setAttribute("height", '215');
-
-				newFigcaption.textContent = elem.author;
-
-				newButton.addEventListener("click", () => {
-					window.open(elem.url, "_blank");
-				});
-
-				newButton.setAttribute("type", "button");
-				newButton.textContent = `See more`;
-				newFigure.append(newImage, newFigcaption, newButton);
-
-				const moveObserver = new IntersectionObserver((entries) => {
-					entries.forEach((entry) => {
-						const intersecting = entry.isIntersecting;
-						if (intersecting) {
-							entry.target.style.opacity = "1";
-							entry.target.style.transform = "scale(1)";
-						} else {
-							entry.target.style.opacity = "0";
-							entry.target.style.transform = "scale(0.5)";
-							
-						}
-					});
-				}, options);
-
-				wrapper.appendChild(newFigure);
-
-				allFigure.forEach((allFigure) => {
-					moveObserver.observe(allFigure);
-				});
-				
+			data.forEach((siglePictureObj) => {
+				addNewContent(siglePictureObj);
 			});
+			navigation();
+			galleryObserver();
 		})
 		.catch((error) => console.log(error));
 };
 
-fetchPicsum();
+requestFetch();
 
-// Mit a-Tags
+// ===================================================
+//      	 		Add New Content
+// ===================================================
 
-// const fetchPicsum = () => {
-// 	const wrapper = document.querySelector('.wrapper');
-// 	fetch("https://picsum.photos/v2/list")
-// 		.then((response) => {
-// 			if (response.ok === false) {
-// 				throw new Error("Hier ist etwas schief gelaufen");
-// 			}
-// 			return response.json();
-// 		})
-// 		.then((data) => {
-// 			data.forEach((elem) => {
-// 				const newFigure = document.createElement("figure");
-// 				const newImage = document.createElement("img");
-// 				const newFigcaption = document.createElement("figcaption");
-// 				const newATag = document.createElement("a");
+const addNewContent = (siglePictureObj) => {
+	const gallery__wrapper = document.querySelector(".gallery__wrapper");
+	const newFigure = document.createElement("figure");
+	const newImage = document.createElement("img");
+	const newFigcaption = document.createElement("figcaption");
+	const newButton = document.createElement("button");
 
-// 				newImage.setAttribute('src', `${elem.download_url}`);
-// 				newImage.setAttribute('alt', `${elem.author}`);
+	newImage.setAttribute("src", `${siglePictureObj.download_url}`);
+	newImage.setAttribute("alt", `${siglePictureObj.author}`);
+	newImage.setAttribute("height", "215");
 
-// 				newFigcaption.textContent = elem.author;
+	newFigcaption.textContent = siglePictureObj.author;
 
-// 				newATag.setAttribute('href', `${elem.url}`);
-// 				newATag.setAttribute('target', '_blank');
-// 				newATag.textContent = `See more`;
-// 				newFigure.append(newImage, newFigcaption, newATag)
+	newButton.addEventListener("click", () => {
+		window.open(siglePictureObj.url, "_blank");
+	});
 
-// 				wrapper.appendChild(newFigure);
-// 			});
-// 		})
-// 		.catch((error) => console.log(error));
-// };
+	newButton.setAttribute("type", "button");
+	newButton.textContent = `See more`;
+	newFigure.append(newImage, newFigcaption, newButton);
+	gallery__wrapper.appendChild(newFigure);
+};
 
-// fetchPicsum();
+// ===================================================
+//      	 	Intersection Observer
+// ===================================================
+
+const galleryObserver = () => {
+	const allFigure = document.querySelectorAll("figure");
+
+	// Options für IntersectionObserver
+	const options = {
+		root: null,
+		rootMargin: "200px",
+		threshold: 0,
+		delay: 500,
+	};
+
+	const moveObserver = new IntersectionObserver((entries) => {
+		entries.forEach((entry) => {
+			const intersecting = entry.isIntersecting;
+			if (intersecting) {
+				entry.target.style.opacity = "1";
+				entry.target.style.transform = "scale(1)";
+			} else {
+				entry.target.style.opacity = "0";
+				entry.target.style.transform = "scale(0.5)";
+			}
+		});
+	}, options);
+
+	allFigure.forEach((allFigure) => {
+		moveObserver.observe(allFigure);
+	});
+};
